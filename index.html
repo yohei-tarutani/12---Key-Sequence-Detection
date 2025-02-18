@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Key Detection</title>
+    <script type="text/javascript" src="./cornify.js"></script>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <script>
+      // Overview:
+      // This script listens for key presses and checks if the user types a secret code ("wesbos").
+      // If the code is entered correctly, the cornify_add() function from cornify.js is called, which adds unicorns, rainbows, and glittery magic to the page. 🦄✨🌈
+
+      const pressed = [];
+      const secretCode = "wesbos";
+      // addEventListener("keyup", callback): Listens for the "keyup" event, which fires when a key is released. e: The event object representing which key was pressed.
+      window.addEventListener("keyup", (e) => {
+        // Logs the key name (e.g., "a", "w", "Enter") whenever a key is released.
+        console.log(e.key);
+        pressed.push(e.key);
+        // "From 7 keys before the end, remove any excess keys so the array never grows beyond 6 elements."
+        // When the array is shorter → splice() does nothing.
+        // When the array grows beyond → it removes the oldest elements from the start.
+        // This ensures that after every key press, the array only contains the most recent keys: exactly enough to check against the secret code.
+        pressed.splice(
+          // Remove excess elements so that the array always contains at most secretCode.length elements.
+          // If pressed.length is less than 6, this means "pressed.splice(0, 0)"
+          -secretCode.length - 1, // the first argument. -startCode.length - 1 = -7. But if the array 'pressed' has fewer than 7 elements, JavaScript just starts at index 0.
+          pressed.length - secretCode.length // the second argument(How many elements to remove). This is valid only when passed.length >= 6 (Must be 0 or positive; negative values are ignored)
+        );
+        // pressed.join(""): Combines the array of keys into a single string.
+        // includes(secretCode): Checks if the typed string contains "wesbos".
+        if (pressed.join("").includes(secretCode)) {
+          console.log("DING DING!");
+          // cornify_add(): A function provided by cornify.js, which adds sparkly unicorns, rainbows, and other whimsical visuals to the page. 🦄✨🌈
+          cornify_add();
+        }
+        console.log(pressed);
+
+        // Example explanation of .splice()
+        // array.splice(startIndex, deleteCount, item1, item2, ...);
+        // let arr = [1, 2, 3, 4, 5];
+        // arr.splice(2, 2);  // Removes 2 elements starting from index 2 → arr = [1, 2, 5]
+      });
+    </script>
+  </body>
+</html>
